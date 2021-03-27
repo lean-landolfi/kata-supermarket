@@ -2,13 +2,39 @@ plugins {
     id 'java'
 }
 
-group 'org.example'
+group 'com.llandolfi.kata-supermarket'
 version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
+sourceCompatibility = 1.11
+
+ext {
+    neo4jVersion = '4.2.3'
+    vertxVersion = '4.0.3'
+    assertjVersion = '3.8.0'
+    mockitoVersion = '2.20.1'
+    junitVersion = '4.12'
+    guiceVersion = '4.2.0'
+    rxjavaVersion = '2.2.21'
+    jeasyRulesVersion = '4.1.0'
+}
+
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    implementation "org.neo4j.driver:neo4j-java-driver:$neo4jVersion"
+    implementation "org.jeasy:easy-rules-core:$jeasyRulesVersion"
+    implementation "org.jeasy:easy-rules-mvel:$jeasyRulesVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
+
+    compile "io.vertx:vertx-core:$vertxVersion"
+    compile "io.vertx:vertx-web:$vertxVersion"
+    compile "io.vertx:vertx-rx-java:$vertxVersion"
+    compile "com.google.inject:guice:$guiceVersion"
+
+    testCompile "junit:junit:$junitVersion"
+    testCompile "org.assertj:assertj-core:$assertjVersion"
+    testCompile "org.mockito:mockito-core:$mockitoVersion"
 }
