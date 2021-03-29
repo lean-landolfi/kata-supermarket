@@ -1,14 +1,17 @@
 package storage;
 
 import entities.ItemRequest;
+import entities.Rule;
 import entities.RuleRequest;
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import org.neo4j.driver.AuthTokens;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
 import org.neo4j.driver.reactive.RxSession;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
@@ -56,6 +59,14 @@ public class Neo4jClient implements AutoCloseable {
         );
     }
 
+    public Single<List<Rule>> getRules() {
+        RxSession rxSession = driver.rxSession();
+
+
+        return Observable.fromPublisher(rxSession.run("MATCH (a:item)-[r]-(b) RETURN b.name, b.description, b.condition, b.action;").records()).map(record ->
+                new Rule(record.get("b.name").asString(), record.get("b.description").asString(), record.get("b.condition").asString(), record.get("b.action").asString())
+        ).toList();
+    }
 
     public Completable createNode(ItemRequest itemRequest) {
         RxSession rxSession = driver.rxSession();
