@@ -1,6 +1,6 @@
-plugins {
-    id 'java'
-}
+apply plugin: "java"
+apply plugin: "idea"
+apply plugin: 'application'
 
 group 'com.llandolfi.kata-supermarket'
 version '1.0-SNAPSHOT'
@@ -20,11 +20,10 @@ ext {
     guiceVersion = '4.2.0'
     rxjavaVersion = '2.2.21'
     jeasyRulesVersion = '4.1.0'
+    cucumberVersion = '6.8.1'
 }
 
 dependencies {
-
-    implementation "org.neo4j.driver:neo4j-java-driver:$neo4jVersion"
     implementation "org.jeasy:easy-rules-core:$jeasyRulesVersion"
     implementation "org.jeasy:easy-rules-mvel:$jeasyRulesVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
@@ -33,8 +32,38 @@ dependencies {
     compile "io.vertx:vertx-web:$vertxVersion"
     compile "io.vertx:vertx-rx-java:$vertxVersion"
     compile "com.google.inject:guice:$guiceVersion"
+    compile "org.neo4j.driver:neo4j-java-driver:$neo4jVersion"
+    compile "org.neo4j:neo4j:$neo4jVersion"
+    compile "org.neo4j:neo4j-bolt:$neo4jVersion"
 
     testCompile "junit:junit:$junitVersion"
     testCompile "org.assertj:assertj-core:$assertjVersion"
     testCompile "org.mockito:mockito-core:$mockitoVersion"
+    testCompile "io.cucumber:cucumber-java:$cucumberVersion"
+    testCompile "io.cucumber:cucumber-junit:$cucumberVersion"
+    testCompile "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
+    compile "io.vertx:vertx-core:$vertxVersion"
+    testCompile "io.vertx:vertx-web:$vertxVersion"
+    testCompile "io.vertx:vertx-rx-java:$vertxVersion"
+}
+
+sourceSets {
+    acceptance {
+        java.srcDir file('src/acceptance/java')
+        resources.srcDir file('src/acceptance/resources')
+        compileClasspath += main.output + test.output + configurations.testRuntime
+        runtimeClasspath += output + compileClasspath
+    }
+}
+
+task acceptance(type: Test) {
+    description = 'Runs the acceptance tests'
+    group = 'verification'
+    testClassesDirs = sourceSets.acceptance.output.classesDirs
+    classpath = sourceSets.acceptance.runtimeClasspath
+    dependsOn(test)
+}
+
+check {
+    dependsOn(acceptance)
 }
