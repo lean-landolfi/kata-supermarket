@@ -20,14 +20,13 @@ ext {
     guiceVersion = '4.2.0'
     rxjavaVersion = '2.2.21'
     jeasyRulesVersion = '4.1.0'
-    cucumberVersion = '6.8.1'
+    cucumberVersion = '4.2.0'
 }
 
 dependencies {
-    implementation "org.jeasy:easy-rules-core:$jeasyRulesVersion"
-    implementation "org.jeasy:easy-rules-mvel:$jeasyRulesVersion"
-    implementation "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
-
+    compile "org.jeasy:easy-rules-core:$jeasyRulesVersion"
+    compile "org.jeasy:easy-rules-mvel:$jeasyRulesVersion"
+    compile "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
     compile "io.vertx:vertx-core:$vertxVersion"
     compile "io.vertx:vertx-web:$vertxVersion"
     compile "io.vertx:vertx-rx-java:$vertxVersion"
@@ -39,12 +38,10 @@ dependencies {
     testCompile "junit:junit:$junitVersion"
     testCompile "org.assertj:assertj-core:$assertjVersion"
     testCompile "org.mockito:mockito-core:$mockitoVersion"
-    testCompile "io.cucumber:cucumber-java:$cucumberVersion"
-    testCompile "io.cucumber:cucumber-junit:$cucumberVersion"
-    testCompile "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
-    compile "io.vertx:vertx-core:$vertxVersion"
-    testCompile "io.vertx:vertx-web:$vertxVersion"
-    testCompile "io.vertx:vertx-rx-java:$vertxVersion"
+    testCompile 'org.skyscreamer:jsonassert:1.5.0'
+    testCompile "io.cucumber:cucumber-java8:${cucumberVersion}"
+    testCompile "io.cucumber:cucumber-junit:${cucumberVersion}"
+    testCompile 'org.apache.httpcomponents:httpclient:4.5.7'
 }
 
 sourceSets {
