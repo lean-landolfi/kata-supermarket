@@ -7,6 +7,12 @@ public class Item {
     private int quantity;
     private long price;
 
+    public Item(String name, int quantity, long price) {
+        this.name = name;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
     public Item(JsonObject request) {
         this.name = request.getString("name");
     }
